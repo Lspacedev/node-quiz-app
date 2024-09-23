@@ -7,7 +7,7 @@ async function question(obj) {
     let counter = 15;
 
     const interval = setInterval(async () => {
-      console.log(counter);
+      console.log("\t", "\t", "\t", "time left: ", counter);
       counter--;
 
       if (counter === 0) {
@@ -21,7 +21,7 @@ async function question(obj) {
       input: process.stdin,
       output: process.stdout,
     });
-    rl.question(obj.q, (answer) => {
+    rl.question(`${obj.q} \n Answer: \n`, (answer) => {
       if (answer === obj.a) {
         console.log("correct");
         resolve(answer);
