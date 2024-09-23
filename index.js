@@ -63,6 +63,7 @@ async function game() {
     },
   ];
   console.log("Welcome to the South Africa Quiz Game");
+
   let q1 = await question(arr[0]);
 
   let q2 = await question(arr[1]);
@@ -72,7 +73,7 @@ async function game() {
   let q4 = await question(arr[3]);
 
   if (q4) {
-    console.log(`Game Over, your score is ${score}`);
+    console.log(`Game Over, your score is ${score}/4`);
   }
 
   const interval = setInterval(async () => {
