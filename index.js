@@ -1,3 +1,4 @@
+const { count } = require("console");
 const readline = require("readline");
 
 let score = 0;
@@ -79,7 +80,7 @@ async function game() {
   const interval = setInterval(async () => {
     counter--;
 
-    if (counter < 0) {
+    if (counter === 0) {
       clearInterval(interval);
       console.log(`Game Over, your score is ${score}`);
     }
