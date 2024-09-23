@@ -1,77 +1,45 @@
-const readlineSync = require("readline-sync");
 const readline = require("readline");
 
-async function timer(test) {
-  let counter = 5;
-
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-  });
-  rl.question(`What's your name?`, (name) => {
-    console.log(`Hi ${name}!`);
-    rl.close();
-  });
-  const interval = setInterval(async () => {
-    counter--;
-    console.log(counter);
-    if (counter < 0) {
-      clearInterval(interval);
-      console.log("time up");
-    }
-  }, 1000);
-}
-
-function readLineAsync(question) {
-  return new Promise((resolve) => {
-    const answer = readlineSync.question(question);
-    resolve(answer);
-  });
-}
 let score = 0;
-let round = 0;
-let done = false;
 
 async function question(obj) {
-  if (round === 3 || round === -3) {
-    done = true;
-  }
-  let counter = 10;
+  return new Promise((resolve) => {
+    let counter = 15;
 
-  const interval = setInterval(async () => {
-    console.log(counter);
-    counter--;
+    const interval = setInterval(async () => {
+      console.log(counter);
+      counter--;
 
-    if (counter === 0) {
-      clearInterval(interval);
+      if (counter === 0) {
+        clearInterval(interval);
+        resolve("time up");
+        console.log("time up");
+      }
+    }, 1000);
 
-      console.log("time up");
-    }
-  }, 1000);
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
+    rl.question(obj.q, (answer) => {
+      if (answer === obj.a) {
+        console.log("correct");
+        resolve(answer);
+        score++;
 
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-  });
-  rl.question(obj.q, (answer) => {
-    if (answer === obj.a) {
-      console.log("correct");
-
-      score++;
-      round++;
-      clearInterval(interval);
-    } else if (answer !== obj.a) {
-      console.log("incorrect");
-
-      clearInterval(interval);
-      round--;
-    }
-    rl.close();
+        clearInterval(interval);
+      } else if (answer !== obj.a) {
+        console.log("incorrect");
+        resolve(answer);
+        clearInterval(interval);
+      }
+      rl.close();
+    });
   });
 }
 
 async function game() {
-  let counter = 30;
+  let counter = 45;
 
   let arr = [
     {
@@ -84,15 +52,16 @@ async function game() {
     },
     { q: "What is continent is South Africa? 1 = Europe, 2 = Africa", a: "2" },
   ];
+  console.log("Welcome to the South Africa Quiz Game");
+  let q1 = await question(arr[0]);
 
-  let miliseconds = 10000;
+  let q2 = await question(arr[1]);
 
-  // arr.forEach((obj, i) => {
-  //   setTimeout(() => {
-  //     question(obj);
-  //   }, miliseconds * i);
-  //   i++;
-  // });
+  let q3 = await question(arr[2]);
+
+  if (q3) {
+    console.log(`Game Over, your score is ${score}`);
+  }
 
   const interval = setInterval(async () => {
     counter--;
@@ -102,8 +71,5 @@ async function game() {
       console.log(`Game Over, your score is ${score}`);
     }
   }, 1000);
-  if (done) {
-    clearInterval(interval);
-  }
 }
 game();
